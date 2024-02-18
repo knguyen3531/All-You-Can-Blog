@@ -1,0 +1,41 @@
+project-root/
+│
+├── config/
+│   └── config.json
+│
+├── controllers/
+│   ├── homeRoutes.js
+│   └── api/
+│       ├── userRoutes.js
+│       ├── postRoutes.js
+│       └── commentRoutes.js
+│
+├── db/
+│   └── schema.sql
+│
+├── models/
+│   ├── index.js
+│   ├── User.js
+│   ├── Post.js
+│   └── Comment.js
+│
+├── public/
+│   ├── css/
+│   │   └── style.css
+│   ├── js/
+│   │   └── script.js
+│   └── images/
+│
+├── views/
+│   ├── layouts/
+│   │   └── main.handlebars
+│   ├── partials/
+│   │   └── post.handlebars
+│   ├── home.handlebars
+│   ├── dashboard.handlebars
+│   ├── login.handlebars
+│   └── signup.handlebars
+│
+├── .env
+├── server.js
+└── package.json

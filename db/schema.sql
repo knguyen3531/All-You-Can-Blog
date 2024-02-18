@@ -1,0 +1,7 @@
+DROP DATABASE IF EXISTS BLOG;
+CREATE DATABASE BLOG;
+SHOW GRANTS FOR 'root'@'localhost';
+
+CREATE USER 'UserName'@'localhost' IDENTIFIED BY 'Password';
+
+GRANT ALL PRIVILEGES ON BLOG.* TO 'UserName'@'localhost';
