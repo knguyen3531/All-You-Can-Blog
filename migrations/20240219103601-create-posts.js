@@ -6,17 +6,17 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('Posts', {
       id: {
-        allowNull: false,
+        allowNull: true,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
       title: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.STRING
       },
       content: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.TEXT
       },
       userId: {
@@ -30,7 +30,7 @@ module.exports = {
         onDelete: 'SET NULL'
       },
       createdAt: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW
       }
