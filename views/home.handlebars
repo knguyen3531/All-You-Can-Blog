@@ -12,7 +12,20 @@
     </header>
     <section>
         {{#each posts}}
-            {{> partials/post this}}
+        <div class="post">
+            <h2>{{this.title}}</h2>
+            <p>Posted by: {{this.User.username}}</p>
+            <p>{{this.content}}</p>
+
+            <div class="comments">
+                {{#each this.Comments}}
+                <div class="comment">
+                    <p>Comment by: {{this.User.username}}</p>
+                    <p>{{this.content}}</p>
+                </div>
+                {{/each}}
+            </div>
+        </div>
         {{/each}}
     </section>
 </body>

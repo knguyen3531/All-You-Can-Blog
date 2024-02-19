@@ -11,10 +11,17 @@
         <h1>Dashboard</h1>
     </header>
     <section>
-        {{#each posts}}
-            {{> partials/post this}}
-        {{/each}}
+{{#each posts}}
+    {{> post}}
+{{/each}}
     </section>
-    <a href="/posts/new">Create New Post</a>
+    <h2>Create New Post</h2>
+    <form action="/api/posts" method="POST">
+        <label for="title">Title:</label><br>
+        <input type="text" id="title" name="title"><br>
+        <label for="content">Content:</label><br>
+        <textarea id="content" name="content"></textarea><br>
+        <button type="submit">Create Post</button>
+    </form>
 </body>
 </html>

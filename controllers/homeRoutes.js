@@ -6,7 +6,21 @@ const withAuth = require('../utils/auth');
 router.get('/', async (req, res) => {
   try {
     const postData = await Post.findAll({
-      include: [{ model: User }],
+      include: [
+        { 
+          model: User,
+          attributes: ['username']  // Include the username of the post's author
+        },
+        { 
+          model: Comment, 
+          include: [
+            {
+              model: User, 
+              attributes: ['username']  // Include the username of the comment's author
+            }
+          ]
+        }
+      ]
     });
 
     const posts = postData.map((post) => post.get({ plain: true }));
@@ -22,7 +36,12 @@ router.get('/dashboard', withAuth, async (req, res) => {
   try {
     const userPosts = await Post.findAll({
       where: { userId: req.session.userId },
-      include: [{ model: Comment, include: [{ model: User }] }],
+      include: [
+        {
+          model: Comment, 
+          include: [{ model: User, attributes: ['username'] }]
+        }
+      ]
     });
 
     const posts = userPosts.map((post) => post.get({ plain: true }));
@@ -35,13 +54,11 @@ router.get('/dashboard', withAuth, async (req, res) => {
 
 // Route to serve the signup page
 router.get('/signup', (req, res) => {
-
   res.render('signup');
 });
 
 // Route to serve the login page
 router.get('/login', (req, res) => {
-
   res.render('login');
 });
 
