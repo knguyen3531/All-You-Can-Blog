@@ -1,11 +1,11 @@
 const { Model, DataTypes } = require('sequelize');
-const bcrypt = require('bcrypt');
+const bcryptjs = require('bcryptjs');
 
 module.exports = (sequelize) => {
   class User extends Model {
     // Method to check password
     checkPassword(loginPw) {
-      return bcrypt.compareSync(loginPw, this.password);
+      return bcryptjs.compareSync(loginPw, this.password);
     }
   }
 
@@ -33,12 +33,12 @@ module.exports = (sequelize) => {
     modelName: 'User',
     hooks: {
       beforeCreate: async (user) => {
-        user.password = await bcrypt.hash(user.password, 10);
+        user.password = await bcryptjs.hash(user.password, 10);
         return user;
       },
       beforeUpdate: async (user) => {
         if (user.changed('password')) {
-          user.password = await bcrypt.hash(user.password, 10);
+          user.password = await bcryptjs.hash(user.password, 10);
         }
         return user;
       }
