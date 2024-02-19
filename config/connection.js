@@ -1,9 +1,10 @@
 const Sequelize = require('sequelize');
+require('dotenv').config();
 
 let sequelize;
 
 if (process.env.JAWSDB_URL) {
-    // Use JawsDB if the environment variable exists (in production on Heroku)
+    // Use JawsDB URL if available (on Heroku)
     sequelize = new Sequelize(process.env.JAWSDB_URL);
 } else {
     // Fall back to local configuration
