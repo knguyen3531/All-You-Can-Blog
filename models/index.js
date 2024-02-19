@@ -19,7 +19,7 @@ if (config.use_env_variable) {
 // Import models
 const User = require('./User')(sequelize);
 const Post = require('./Post')(sequelize);
-const Comment = require('./Comment')(sequelize);
+const Comment = require('./comment')(sequelize);
 
 // Define model associations
 User.hasMany(Post, { foreignKey: 'userId' });
