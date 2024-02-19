@@ -1,12 +1,23 @@
 require('dotenv').config(); // Load environment variables from .env file
-
 const express = require('express');
 const session = require('express-session');
+const Sequelize = require('sequelize');
 const exphbs = require('express-handlebars');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
 
-// Import the connection object (sequelize instance)
-const sequelize = require('./models').sequelize;
+// Initialize Sequelize with JawsDB or local configuration
+let sequelize;
+if (process.env.JAWSDB_URL) {
+    // Use JawsDB if the environment variable exists (in production on Heroku)
+    sequelize = new Sequelize(process.env.JAWSDB_URL);
+} else {
+    // Fall back to local configuration
+    sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
+        host: process.env.DB_HOST,
+        dialect: 'mysql',
+        port: process.env.DB_PORT
+    });
+}
 
 // Routes
 const homeRoutes = require('./controllers/homeRoutes');
@@ -28,13 +39,15 @@ app.use(express.static('public'));
 
 // Set up session with sequelize store
 app.use(session({
-  secret: process.env.SESSION_SECRET, // Use the session secret from .env
-  cookie: {},
-  resave: false,
-  saveUninitialized: true,
-  store: new SequelizeStore({
-    db: sequelize
-  })
+    secret: process.env.SESSION_SECRET, // Use the session secret from .env
+    cookie: {},
+    resave: false,
+    saveUninitialized: true,
+    store: new SequelizeStore({
+        db: sequelize,
+        checkExpirationInterval: 15 * 60 * 1000, // Check expired sessions every 15 minutes
+        expiration: 24 * 60 * 60 * 1000  // Sessions expire after 24 hours
+    })
 }));
 
 // Use Routes
@@ -43,12 +56,12 @@ app.use('/api', apiRoutes);
 
 // Start the server and sync the database
 app.listen(PORT, () => {
-  console.log(`App listening at http://localhost:${PORT}/`);
-  sequelize.sync({ force: false }).then(() => {
-    console.log('Database synced');
-  }).catch((error) => {
-    console.log('Failed to sync database: ' + error);
-  });
+    console.log(`App listening at http://localhost:${PORT}/`);
+    sequelize.sync({ force: false }).then(() => {
+        console.log('Database synced');
+    }).catch((error) => {
+        console.error('Failed to sync database: ' + error);
+    });
 });
 
 app.use((err, req, res, next) => {
